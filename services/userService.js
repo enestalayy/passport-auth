@@ -26,10 +26,12 @@ class UserService {
   }
 
   static async verifyEmail(token) {
+    console.log("verifyEmail started... token: :>> ", token);
     const tokenDoc = await Token.findOne({
       token,
       type: "emailVerification",
     });
+    console.log("token found... :>> ", tokenDoc);
 
     if (!tokenDoc) {
       throw new Error("Invalid or expired verification token");
@@ -40,6 +42,7 @@ class UserService {
       { emailVerified: true },
       { new: true }
     );
+    console.log("user updated... :>> ", user);
 
     await Token.deleteOne({ _id: tokenDoc._id });
     await AuditService.log(user._id, "EMAIL_VERIFIED");

@@ -15,3 +15,5 @@
 {"level":"info","message":"Server running on port 8000","timestamp":"2024-11-14T08:02:45.720Z"}
 {"level":"info","message":"MongoDB connected successfully","timestamp":"2024-11-14T08:02:46.511Z"}
 {"level":"info","message":"::1 - - [14/Nov/2024:08:03:25 +0000] \"POST /api/auth/register HTTP/1.1\" 201 178 \"-\" \"-\"","timestamp":"2024-11-14T08:03:25.396Z"}
+{"level":"info","message":"::1 - - [14/Nov/2024:08:29:22 +0000] \"GET /verify-email?token=f6cd12e8d581dff6a303711bf9aae00131fcca55ff051f82f2c528737033317d HTTP/1.1\" 404 151 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36\"","timestamp":"2024-11-14T08:29:22.487Z"}
+{"level":"info","message":"::1 - - [14/Nov/2024:08:31:37 +0000] \"GET /verify-email?token=f6cd12e8d581dff6a303711bf9aae00131fcca55ff051f82f2c528737033317d HTTP/1.1\" 404 151 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36\"","timestamp":"2024-11-14T08:31:37.116Z"}

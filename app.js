@@ -50,6 +50,8 @@ app.use(
   })
 );
 
+app.set("trust proxy", 1);
+
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -134,19 +136,19 @@ const connectWithRetry = async () => {
 
 connectWithRetry();
 
-// Graceful shutdown
-process.on("SIGTERM", () => {
-  logger.info("SIGTERM signal received");
-  app.close(() => {
-    logger.info("HTTP server closed");
-    mongoose.connection.close(false, () => {
-      logger.info("MongoDB connection closed");
-      process.exit(0);
-    });
-  });
-});
+// // Graceful shutdown
+// process.on("SIGTERM", () => {
+//   logger.info("SIGTERM signal received");
+//   app.close(() => {
+//     logger.info("HTTP server closed");
+//     mongoose.connection.close(false, () => {
+//       logger.info("MongoDB connection closed");
+//       process.exit(0);
+//     });
+//   });
+// });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 const server = app.listen(PORT, () => {
   logger.info(`Server running on port ${PORT}`);
 });
