@@ -29,7 +29,7 @@ class EmailService {
   }
 
   static async sendPasswordResetEmail(user, token) {
-    const resetUrl = `${config.appUrl}/reset-password?token=${token}`;
+    const resetUrl = `${config.app.url}/reset-password?token=${token}`;
 
     const htmlContent = resetPasswordTemplate(user, resetUrl);
     await transporter.sendMail({

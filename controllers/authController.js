@@ -20,6 +20,13 @@ class AuthController {
         },
       });
     } catch (error) {
+      // MongoDB tarafından dönen hata mesajını yakala
+      if (error.message === "Email already in use") {
+        return res
+          .status(400)
+          .json({ message: "This email is already registered." });
+      }
+      // Diğer hatalar için bir sonraki middleware'e gönder
       next(error);
     }
   }
@@ -50,6 +57,7 @@ class AuthController {
 
   static async logout(req, res, next) {
     try {
+      console.log("logout başladı :>> ", req);
       const { refreshToken } = req.body;
       await AuthService.logout(req.user.id, refreshToken);
       res.json({ message: "Logged out successfully" });

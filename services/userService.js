@@ -6,23 +6,33 @@ const AuditService = require("./auditService");
 
 class UserService {
   static async register(userData, reqInfo) {
-    const user = await User.create({
-      ...userData,
-      emailVerified: false,
-    });
+    try {
+      // Kullanıcıyı veritabanında oluştur
+      const user = await User.create(userData);
 
-    const verificationToken = TokenService.generateEmailVerificationToken();
-    await Token.create({
-      userId: user._id,
-      token: verificationToken,
-      type: "emailVerification",
-      expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 saat
-    });
+      // Doğrulama token'ı oluştur ve kaydet
+      const verificationToken = TokenService.generateEmailVerificationToken();
+      await Token.create({
+        userId: user._id,
+        token: verificationToken,
+        type: "emailVerification",
+        expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 saat
+      });
 
-    await EmailService.sendVerificationEmail(user, verificationToken);
-    await AuditService.log(user._id, "USER_REGISTERED", {}, reqInfo);
+      // Doğrulama e-postası gönder
+      await EmailService.sendVerificationEmail(user, verificationToken);
 
-    return user;
+      // Kayıt işlemini günlüğe kaydet
+      await AuditService.log(user._id, "USER_REGISTERED", {}, reqInfo);
+
+      return user;
+    } catch (error) {
+      // MongoDB'nin benzersizlik hatasını yakala
+      if (error.code === 11000 && error.keyPattern && error.keyPattern.email) {
+        throw new Error("Email already in use");
+      }
+      throw error; // Diğer hataları fırlat
+    }
   }
 
   static async verifyEmail(token) {

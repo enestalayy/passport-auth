@@ -3,6 +3,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const FacebookStrategy = require("passport-facebook").Strategy;
+const { Strategy: JwtStrategy, ExtractJwt } = require("passport-jwt");
 const User = require("../models/User");
 const config = require("./config");
 
@@ -105,4 +106,29 @@ passport.use(
       }
     }
   )
+);
+
+// JWT Strategy
+const opts = {
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  secretOrKey: config.jwt.accessSecret, // config dosyanızda jwt secret tanımlı olmalı
+};
+
+passport.use(
+  new JwtStrategy(opts, async (jwt_payload, done) => {
+    console.log("JWT payload:", jwt_payload);
+
+    try {
+      const user = await User.findById(jwt_payload.userId);
+      console.log("user:", user);
+
+      if (user) {
+        console.log("user:", user);
+        return done(null, user);
+      }
+      return done(null, false);
+    } catch (err) {
+      return done(err, false);
+    }
+  })
 );

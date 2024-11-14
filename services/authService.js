@@ -65,6 +65,7 @@ class AuthService {
   }
 
   static async logout(userId, refreshToken) {
+    console.log("service logout başladı :>> ", userId + refreshToken);
     await Token.deleteOne({
       userId,
       token: refreshToken,

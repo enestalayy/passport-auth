@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema(
     googleId: String,
     facebookId: String,
     profilePicture: String,
-    emailVerified: Boolean,
+    emailVerified: { type: Boolean, default: false },
     role: {
       type: String,
       enum: ["user", "admin"],
