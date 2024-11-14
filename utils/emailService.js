@@ -17,7 +17,7 @@ class EmailService {
     });
   }
   static async sendVerificationEmail(user, token) {
-    const verificationUrl = `${config.appUrl}/verify-email?token=${token}`;
+    const verificationUrl = `${config.app.url}/verify-email?token=${token}`;
 
     const htmlContent = verifyEmailTemplate(user, verificationUrl);
     await transporter.sendMail({
